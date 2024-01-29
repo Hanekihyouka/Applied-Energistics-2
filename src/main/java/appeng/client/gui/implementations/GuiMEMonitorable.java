@@ -300,7 +300,6 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         if (this.viewCell || this instanceof GuiWirelessTerm) {
             this.buttonList.add(this.craftingStatusBtn = new GuiTabButton(this.guiLeft + 170 + this.morePerRow * 18, this.guiTop - 4, 2 + 11 * 16, GuiText.CraftingStatus
                     .getLocal(), this.itemRender));
-            //this.craftingStatusBtn.setHideEdge(13);
             for (int i = 0; i < 5; i++) {
                 this.monitorableContainer.getCellViewSlot(i).xPos = 206 + this.morePerRow * 18;
             }
@@ -329,8 +328,21 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         craftingGridOffsetY = Integer.MAX_VALUE;
 
         for (final Object s : this.inventorySlots.inventorySlots) {
-            if (s instanceof SlotPlayerInv || s instanceof SlotPlayerHotBar || s instanceof SlotDisabled || s instanceof SlotCraftingMatrix || s instanceof SlotFakeCraftingMatrix || s instanceof AppEngCraftingSlot){
-                this.repositionSlot((AppEngSlot) s);
+            if (s instanceof AppEngSlot){
+                if (!(s instanceof SlotRestrictedInput)){
+                    this.repositionSlot((AppEngSlot) s);
+                } else {
+                    switch (((SlotRestrictedInput) s).getPlaceableItemType()){
+                        case VIEW_CELL:
+                            break;
+                        case UPGRADES:
+                            break;
+                        default:
+                            this.repositionSlot((AppEngSlot) s);
+                    }
+                }
+
+
             }
 
             if (s instanceof SlotCraftingMatrix || s instanceof SlotFakeCraftingMatrix) {
@@ -399,17 +411,28 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
 
         this.bindTexture(this.getBackground());
         final int x_width = 197;
+        int append_x = this.morePerRow * 18 + 27;
         this.drawTexturedModalRect(offsetX, offsetY, 0, 0, x_width - 24, 18);
+        this.drawTexturedModalRect(offsetX + 170, offsetY, x_width - append_x, 0, append_x, 18);
+
 
         if (this.viewCell || (this instanceof GuiSecurityStation)) {
             this.drawTexturedModalRect(offsetX + x_width + this.morePerRow * 18, offsetY + jeiOffset, x_width, 0, 46, 128);
         }
 
+
         for (int x = 0; x < this.rows; x++) {
             this.drawTexturedModalRect(offsetX, offsetY + 18 + x * 18, 0, 18, 170, 18);
-            for (int m = 0; m < this.morePerRow ; m++) {
-                this.drawTexturedModalRect(offsetX + 170 + m * 18, offsetY + 17 + x * 18, 8, 17, 18, 18);
+            if (x == 0){
+                this.drawTexturedModalRect(offsetX + 170, offsetY + 17 + x * 18, x_width - append_x, 17, append_x, 18);
+            }else if (x == this.rows - 1){
+                this.drawTexturedModalRect(offsetX + 170, offsetY + 17 + x * 18, x_width - append_x, 17 + 36, append_x , 18);
+            }else {
+                this.drawTexturedModalRect(offsetX + 170, offsetY + 17 + x * 18, x_width - append_x, 17 + 18, append_x, 18);
             }
+            //for (int m = 0; m < this.morePerRow ; m++) {
+            //    this.drawTexturedModalRect(offsetX + 170 + m * 18, offsetY + 17 + x * 18, 8, 17, 18, 18);
+            //}
         }
 
         this.drawTexturedModalRect(offsetX + this.morePerRow * 9, offsetY + 17 + this.rows * 18 + this.lowerTextureOffset, 0, 107 - 18 - 18, x_width,
@@ -448,6 +471,10 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_ROWS).ordinal() + 3;
     }
 
+    protected int getMorePerRow(){
+        return this.morePerRow;
+    }
+
     protected int getMaxPerRows(){
         return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_COLUMNS).ordinal() + 9;
     }
@@ -455,6 +482,9 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     protected void repositionSlot(final AppEngSlot s) {
         s.yPos = s.getY() + this.ySize - 78 - 5;
         s.xPos = s.getX() + this.morePerRow * 9;
+        if (s instanceof SlotPatternOutputs){
+            System.out.println(s.slotNumber + " : " + s.xPos + ", " + s.getX() + " _ " + s.yPos + " _ " + s.getY());
+        }
     }
 
     @Override

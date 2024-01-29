@@ -31,6 +31,7 @@ import appeng.container.implementations.ContainerWirelessPatternTerminal;
 import appeng.container.interfaces.IJEIGhostIngredients;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.SlotFake;
+import appeng.container.slot.SlotPatternOutputs;
 import appeng.core.AELog;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
@@ -157,48 +158,47 @@ public class GuiPatternTerm extends GuiMEMonitorable implements IJEIGhostIngredi
     @Override
     public void initGui() {
         super.initGui();
-
-        this.tabCraftButton = new GuiTabButton(this.guiLeft + 173, this.guiTop + this.ySize - 177, new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern
+        this.tabCraftButton = new GuiTabButton(this.guiLeft + getMorePerRow() * 9 + 173, this.guiTop + this.ySize - 177, new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern
                 .getLocal(), this.itemRender);
         this.buttonList.add(this.tabCraftButton);
 
-        this.tabProcessButton = new GuiTabButton(this.guiLeft + 173, this.guiTop + this.ySize - 177, new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern
+        this.tabProcessButton = new GuiTabButton(this.guiLeft + getMorePerRow() * 9 + 173, this.guiTop + this.ySize - 177, new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern
                 .getLocal(), this.itemRender);
         this.buttonList.add(this.tabProcessButton);
 
-        this.substitutionsEnabledBtn = new GuiImgButton(this.guiLeft + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.ENABLED);
+        this.substitutionsEnabledBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.ENABLED);
         this.substitutionsEnabledBtn.setHalfSize(true);
         this.buttonList.add(this.substitutionsEnabledBtn);
 
-        this.substitutionsDisabledBtn = new GuiImgButton(this.guiLeft + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.DISABLED);
+        this.substitutionsDisabledBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.DISABLED);
         this.substitutionsDisabledBtn.setHalfSize(true);
         this.buttonList.add(this.substitutionsDisabledBtn);
 
-        this.clearBtn = new GuiImgButton(this.guiLeft + 74, this.guiTop + this.ySize - 163, Settings.ACTIONS, ActionItems.CLOSE);
+        this.clearBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 74, this.guiTop + this.ySize - 163, Settings.ACTIONS, ActionItems.CLOSE);
         this.clearBtn.setHalfSize(true);
         this.buttonList.add(this.clearBtn);
 
-        this.x3Btn = new GuiImgButton(this.guiLeft + 128, this.guiTop + this.ySize - 158, Settings.ACTIONS, ActionItems.MULTIPLY_BY_THREE);
+        this.x3Btn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 128, this.guiTop + this.ySize - 158, Settings.ACTIONS, ActionItems.MULTIPLY_BY_THREE);
         this.x3Btn.setHalfSize(true);
         this.buttonList.add(this.x3Btn);
 
-        this.x2Btn = new GuiImgButton(this.guiLeft + 128, this.guiTop + this.ySize - 148, Settings.ACTIONS, ActionItems.MULTIPLY_BY_TWO);
+        this.x2Btn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 128, this.guiTop + this.ySize - 148, Settings.ACTIONS, ActionItems.MULTIPLY_BY_TWO);
         this.x2Btn.setHalfSize(true);
         this.buttonList.add(this.x2Btn);
 
-        this.plusOneBtn = new GuiImgButton(this.guiLeft + 128, this.guiTop + this.ySize - 138, Settings.ACTIONS, ActionItems.INCREASE_BY_ONE);
+        this.plusOneBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 128, this.guiTop + this.ySize - 138, Settings.ACTIONS, ActionItems.INCREASE_BY_ONE);
         this.plusOneBtn.setHalfSize(true);
         this.buttonList.add(this.plusOneBtn);
 
-        this.divThreeBtn = new GuiImgButton(this.guiLeft + 100, this.guiTop + this.ySize - 158, Settings.ACTIONS, ActionItems.DIVIDE_BY_THREE);
+        this.divThreeBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 100, this.guiTop + this.ySize - 158, Settings.ACTIONS, ActionItems.DIVIDE_BY_THREE);
         this.divThreeBtn.setHalfSize(true);
         this.buttonList.add(this.divThreeBtn);
 
-        this.divTwoBtn = new GuiImgButton(this.guiLeft + 100, this.guiTop + this.ySize - 148, Settings.ACTIONS, ActionItems.DIVIDE_BY_TWO);
+        this.divTwoBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 100, this.guiTop + this.ySize - 148, Settings.ACTIONS, ActionItems.DIVIDE_BY_TWO);
         this.divTwoBtn.setHalfSize(true);
         this.buttonList.add(this.divTwoBtn);
 
-        this.minusOneBtn = new GuiImgButton(this.guiLeft + 100, this.guiTop + this.ySize - 138, Settings.ACTIONS, ActionItems.DECREASE_BY_ONE);
+        this.minusOneBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 100, this.guiTop + this.ySize - 138, Settings.ACTIONS, ActionItems.DECREASE_BY_ONE);
         this.minusOneBtn.setHalfSize(true);
         this.buttonList.add(this.minusOneBtn);
 
@@ -206,7 +206,7 @@ public class GuiPatternTerm extends GuiMEMonitorable implements IJEIGhostIngredi
         //this.maxCountBtn.setHalfSize( true );
         //this.buttonList.add( this.maxCountBtn );
 
-        this.encodeBtn = new GuiImgButton(this.guiLeft + 147, this.guiTop + this.ySize - 142, Settings.ACTIONS, ActionItems.ENCODE);
+        this.encodeBtn = new GuiImgButton(this.guiLeft + getMorePerRow() * 9 + 147, this.guiTop + this.ySize - 142, Settings.ACTIONS, ActionItems.ENCODE);
         this.buttonList.add(this.encodeBtn);
     }
 
@@ -245,7 +245,7 @@ public class GuiPatternTerm extends GuiMEMonitorable implements IJEIGhostIngredi
         }
 
         super.drawFG(offsetX, offsetY, mouseX, mouseY);
-        this.fontRenderer.drawString(GuiText.PatternTerminal.getLocal(), 8, this.ySize - 96 + 2 - this.getReservedSpace(), 4210752);
+        this.fontRenderer.drawString(GuiText.PatternTerminal.getLocal(), 8 + getMorePerRow() * 9, this.ySize - 96 + 2 - this.getReservedSpace(), 4210752);
     }
 
     @Override
@@ -259,9 +259,8 @@ public class GuiPatternTerm extends GuiMEMonitorable implements IJEIGhostIngredi
 
     @Override
     protected void repositionSlot(final AppEngSlot s) {
-        final int offsetPlayerSide = s.isPlayerSide() ? 5 : 3;
-
-        s.yPos = s.getY() + this.ySize - 78 - offsetPlayerSide;
+        super.repositionSlot(s);
+        if (!s.isPlayerSide()){s.yPos += 2;}
     }
 
     @Override
