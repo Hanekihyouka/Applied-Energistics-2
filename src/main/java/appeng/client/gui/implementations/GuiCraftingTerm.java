@@ -68,14 +68,14 @@ public class GuiCraftingTerm extends GuiMEMonitorable {
     @Override
     public void initGui() {
         super.initGui();
-        this.buttonList.add(this.clearBtn = new GuiImgButton(this.guiLeft + 92, this.guiTop + this.ySize - 156, Settings.ACTIONS, ActionItems.STASH));
+        this.buttonList.add(this.clearBtn = new GuiImgButton(this.guiLeft + 92 + (getMaxPerRows() - 9) * 9, this.guiTop + this.ySize - 156, Settings.ACTIONS, ActionItems.STASH));
         this.clearBtn.setHalfSize(true);
     }
 
     @Override
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(offsetX, offsetY, mouseX, mouseY);
-        this.fontRenderer.drawString(GuiText.CraftingTerminal.getLocal(), 8, this.ySize - 96 + 1 - this.getReservedSpace(), 4210752);
+        this.fontRenderer.drawString(GuiText.CraftingTerminal.getLocal(), 8 + (getMaxPerRows() - 9) * 9, this.ySize - 96 + 1 - this.getReservedSpace(), 4210752);
     }
 
     @Override

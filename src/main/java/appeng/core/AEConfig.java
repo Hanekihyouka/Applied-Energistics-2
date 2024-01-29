@@ -157,6 +157,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
 
         this.settings.registerSetting(Settings.SEARCH_TOOLTIPS, YesNo.YES);
         this.settings.registerSetting(Settings.TERMINAL_STYLE, TerminalStyle.TALL);
+        this.settings.registerSetting(Settings.TERMINAL_ROWS, TerminalRows.ROW6);
+        this.settings.registerSetting(Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN9);
         this.settings.registerSetting(Settings.SEARCH_MODE, SearchBoxMode.AUTOSEARCH);
 
         this.spawnChargedChance = (float) (1.0 - this.get("worldGen", "spawnChargedChance", 1.0 - this.spawnChargedChance).getDouble(1.0 - this.spawnChargedChance));

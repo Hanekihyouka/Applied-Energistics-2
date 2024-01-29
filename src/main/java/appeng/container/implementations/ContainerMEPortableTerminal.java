@@ -21,6 +21,7 @@ package appeng.container.implementations;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.config.Settings;
 import appeng.api.implementations.IUpgradeableCellContainer;
 import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.api.networking.security.IActionHost;
@@ -194,7 +195,8 @@ public class ContainerMEPortableTerminal extends ContainerMEMonitorable implemen
     public void setupUpgrades() {
         if (wirelessTerminalGUIObject != null) {
             for (int upgradeSlot = 0; upgradeSlot < availableUpgrades(); upgradeSlot++) {
-                this.magnetSlot = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, upgradeSlot, 206, 135 + upgradeSlot * 18, this.getInventoryPlayer());
+                int x_offset = AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_COLUMNS).ordinal() * 18;
+                this.magnetSlot = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, upgradeSlot, 206 + x_offset, 135 + upgradeSlot * 18, this.getInventoryPlayer());
                 this.magnetSlot.setNotDraggable();
                 this.addSlotToContainer(magnetSlot);
             }
