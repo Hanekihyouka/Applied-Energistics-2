@@ -334,8 +334,10 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
                 } else {
                     switch (((SlotRestrictedInput) s).getPlaceableItemType()){
                         case VIEW_CELL:
-                            break;
                         case UPGRADES:
+                            break;
+                        case ENCODABLE_ITEM:
+                            ((AppEngSlot) s).xPos = ((AppEngSlot) s).getX() + this.morePerRow * 18;
                             break;
                         default:
                             this.repositionSlot((AppEngSlot) s);
@@ -482,9 +484,6 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     protected void repositionSlot(final AppEngSlot s) {
         s.yPos = s.getY() + this.ySize - 78 - 5;
         s.xPos = s.getX() + this.morePerRow * 9;
-        if (s instanceof SlotPatternOutputs){
-            System.out.println(s.slotNumber + " : " + s.xPos + ", " + s.getX() + " _ " + s.yPos + " _ " + s.getY());
-        }
     }
 
     @Override
