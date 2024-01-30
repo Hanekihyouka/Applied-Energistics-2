@@ -343,8 +343,6 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
                             this.repositionSlot((AppEngSlot) s);
                     }
                 }
-
-
             }
 
             if (s instanceof SlotCraftingMatrix || s instanceof SlotFakeCraftingMatrix) {
@@ -432,9 +430,6 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
             }else {
                 this.drawTexturedModalRect(offsetX + 170, offsetY + 17 + x * 18, x_width - append_x, 17 + 18, append_x, 18);
             }
-            //for (int m = 0; m < this.morePerRow ; m++) {
-            //    this.drawTexturedModalRect(offsetX + 170 + m * 18, offsetY + 17 + x * 18, 8, 17, 18, 18);
-            //}
         }
 
         this.drawTexturedModalRect(offsetX + this.morePerRow * 9, offsetY + 17 + this.rows * 18 + this.lowerTextureOffset, 0, 107 - 18 - 18, x_width,

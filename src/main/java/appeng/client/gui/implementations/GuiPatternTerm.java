@@ -31,7 +31,6 @@ import appeng.container.implementations.ContainerWirelessPatternTerminal;
 import appeng.container.interfaces.IJEIGhostIngredients;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.SlotFake;
-import appeng.container.slot.SlotPatternOutputs;
 import appeng.core.AELog;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
@@ -259,7 +258,8 @@ public class GuiPatternTerm extends GuiMEMonitorable implements IJEIGhostIngredi
 
     @Override
     protected void repositionSlot(final AppEngSlot s) {
-        super.repositionSlot(s);
+        s.yPos = s.getY() + this.ySize - 78 - 5;
+        s.xPos = s.getX() + getMorePerRow() * 9;
         if (!s.isPlayerSide()){s.yPos += 2;}
     }
 
