@@ -99,6 +99,30 @@ public class GuiImgButton extends GuiButton implements ITooltip {
             this.registerApp(16 * 13 + 1, Settings.TERMINAL_STYLE, TerminalStyle.SMALL, ButtonToolTips.TerminalStyle, ButtonToolTips.TerminalStyle_Small);
             this.registerApp(16 * 13 + 2, Settings.TERMINAL_STYLE, TerminalStyle.FULL, ButtonToolTips.TerminalStyle, ButtonToolTips.TerminalStyle_Full);
 
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW3, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW4, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW5, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW6, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW7, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW8, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW9, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW10, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW11, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW12, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW13, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW14, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW15, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+            this.registerApp(16 * 13 + 3, Settings.TERMINAL_ROWS, TerminalRows.ROW16, ButtonToolTips.TerminalRows, ButtonToolTips.TerminalRows);
+
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN9, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN10, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN11, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN12, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN13, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN14, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN15, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+            this.registerApp(16 * 13 + 4, Settings.TERMINAL_COLUMNS, TerminalColumns.COLUMN16, ButtonToolTips.TerminalColumns, ButtonToolTips.TerminalColumns);
+
             this.registerApp(64, Settings.SORT_BY, SortOrder.NAME, ButtonToolTips.SortBy, ButtonToolTips.ItemName);
             this.registerApp(65, Settings.SORT_BY, SortOrder.AMOUNT, ButtonToolTips.SortBy, ButtonToolTips.NumberOfItems);
             this.registerApp(68, Settings.SORT_BY, SortOrder.INVTWEAKS, ButtonToolTips.SortBy, ButtonToolTips.InventoryTweaks);

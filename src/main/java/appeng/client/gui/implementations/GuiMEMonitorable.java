@@ -19,9 +19,7 @@
 package appeng.client.gui.implementations;
 
 
-import appeng.api.config.SearchBoxMode;
-import appeng.api.config.Settings;
-import appeng.api.config.TerminalStyle;
+import appeng.api.config.*;
 import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.api.implementations.tiles.IMEChest;
 import appeng.api.implementations.tiles.IViewCellStorage;
@@ -40,9 +38,7 @@ import appeng.client.me.InternalSlotME;
 import appeng.client.me.ItemRepo;
 import appeng.client.me.SlotME;
 import appeng.container.implementations.ContainerMEMonitorable;
-import appeng.container.slot.AppEngSlot;
-import appeng.container.slot.SlotCraftingMatrix;
-import appeng.container.slot.SlotFakeCraftingMatrix;
+import appeng.container.slot.*;
 import appeng.core.AEConfig;
 import appeng.core.AELog;
 import appeng.core.AppEng;
@@ -88,6 +84,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     private MEGuiTextField searchField;
     private GuiText myName;
     private int perRow = 9;
+    private int morePerRow = 0;
     private int reservedSpace = 0;
     private boolean customSortOrder = true;
     private int rows = 0;
@@ -98,6 +95,8 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     private GuiImgButton SortDirBox;
     private GuiImgButton searchBoxSettings;
     private GuiImgButton terminalStyleBox;
+    private GuiImgButton terminalRowsBox;
+    private GuiImgButton terminalColumnsBox;
     private boolean isAutoFocus = false;
     private int currentMouseX = 0;
     private int currentMouseY = 0;
@@ -167,7 +166,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     }
 
     private void setScrollBar() {
-        this.getScrollBar().setTop(18).setLeft(175).setHeight(this.rows * 18 - 2);
+        this.getScrollBar().setTop(18).setLeft(175 + this.morePerRow * 18).setHeight(this.rows * 18 - 2);
         this.getScrollBar().setRange(0, (this.repo.size() + this.perRow - 1) / this.perRow - this.rows, Math.max(1, this.rows / 6));
     }
 
@@ -185,7 +184,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
                 final Enum cv = iBtn.getCurrentValue();
                 final Enum next = Platform.rotateEnum(cv, backwards, iBtn.getSetting().getPossibleValues());
 
-                if (btn == this.terminalStyleBox) {
+                if (btn == this.terminalStyleBox || btn == this.terminalRowsBox || btn == this.terminalColumnsBox) {
                     AEConfig.instance().getConfigManager().putSetting(iBtn.getSetting(), next);
                 } else if (btn == this.searchBoxSettings) {
                     AEConfig.instance().getConfigManager().putSetting(iBtn.getSetting(), next);
@@ -199,7 +198,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
 
                 iBtn.set(next);
 
-                if (next.getClass() == SearchBoxMode.class || next.getClass() == TerminalStyle.class) {
+                if (next.getClass() == SearchBoxMode.class || next.getClass() == TerminalStyle.class || next.getClass() == TerminalRows.class || next.getClass() == TerminalColumns.class) {
                     this.reinitalize();
                 }
             }
@@ -216,11 +215,8 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         Keyboard.enableRepeatEvents(true);
 
         this.maxRows = this.getMaxRows();
-        this.perRow = AEConfig.instance()
-                .getConfigManager()
-                .getSetting(
-                        Settings.TERMINAL_STYLE) != TerminalStyle.FULL ? 9 : 9 + ((this.width - this.standardSize) / 18);
-
+        this.perRow = this.getMaxPerRows();
+        this.morePerRow = this.perRow - 9;
         final int magicNumber = 114 + 1;
         final int extraSpace = this.height - magicNumber - this.reservedSpace;
 
@@ -284,11 +280,15 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
 
         offset += 20;
 
-        if (!(this instanceof GuiMEPortableCell) || this instanceof GuiWirelessTerm) {
-            this.buttonList.add(this.terminalStyleBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.TERMINAL_STYLE, AEConfig.instance()
-                    .getConfigManager()
-                    .getSetting(Settings.TERMINAL_STYLE)));
-        }
+        this.buttonList.add(this.terminalColumnsBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.TERMINAL_COLUMNS, AEConfig.instance()
+                .getConfigManager()
+                .getSetting(Settings.TERMINAL_COLUMNS)));
+
+        offset += 20;
+
+        this.buttonList.add(this.terminalRowsBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.TERMINAL_ROWS, AEConfig.instance()
+                .getConfigManager()
+                .getSetting(Settings.TERMINAL_ROWS)));
 
         this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(80, this.offsetX), this.guiTop + 4, 90, 12);
         this.searchField.setEnableBackgroundDrawing(false);
@@ -298,9 +298,11 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         this.searchField.setVisible(true);
 
         if (this.viewCell || this instanceof GuiWirelessTerm) {
-            this.buttonList.add(this.craftingStatusBtn = new GuiTabButton(this.guiLeft + 170, this.guiTop - 4, 2 + 11 * 16, GuiText.CraftingStatus
+            this.buttonList.add(this.craftingStatusBtn = new GuiTabButton(this.guiLeft + 170 + this.morePerRow * 18, this.guiTop - 4, 2 + 11 * 16, GuiText.CraftingStatus
                     .getLocal(), this.itemRender));
-            this.craftingStatusBtn.setHideEdge(13);
+            for (int i = 0; i < 5; i++) {
+                this.monitorableContainer.getCellViewSlot(i).xPos = 206 + this.morePerRow * 18;
+            }
         }
 
         final Enum searchModeSetting = AEConfig.instance().getConfigManager().getSetting(Settings.SEARCH_MODE);
@@ -326,9 +328,20 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         craftingGridOffsetY = Integer.MAX_VALUE;
 
         for (final Object s : this.inventorySlots.inventorySlots) {
-            if (s instanceof AppEngSlot) {
-                if (((Slot) s).xPos < 197) {
+            if (s instanceof AppEngSlot){
+                if (!(s instanceof SlotRestrictedInput)){
                     this.repositionSlot((AppEngSlot) s);
+                } else {
+                    switch (((SlotRestrictedInput) s).getPlaceableItemType()){
+                        case VIEW_CELL:
+                        case UPGRADES:
+                            break;
+                        case ENCODABLE_ITEM:
+                            ((AppEngSlot) s).xPos = ((AppEngSlot) s).getX() + this.morePerRow * 18;
+                            break;
+                        default:
+                            this.repositionSlot((AppEngSlot) s);
+                    }
                 }
             }
 
@@ -357,7 +370,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         exclusionArea.add(sortDir);
 
         if (this.viewCell) {
-            Rectangle viewMode = new Rectangle(guiLeft + 205, yOffset - 4, 24, 19 * monitorableContainer.getViewCells().length);
+            Rectangle viewMode = new Rectangle(guiLeft + 205 + this.morePerRow * 18 , yOffset - 4, 24, 19 * monitorableContainer.getViewCells().length);
             exclusionArea.add(viewMode);
         }
 
@@ -367,7 +380,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     @Override
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         this.fontRenderer.drawString(this.getGuiDisplayName(this.myName.getLocal()), 8, 6, 4210752);
-        this.fontRenderer.drawString(GuiText.inventory.getLocal(), 8, this.ySize - 96 + 3, 4210752);
+        this.fontRenderer.drawString(GuiText.inventory.getLocal(), 8 + this.morePerRow * 9, this.ySize - 96 + 3, 4210752);
 
         this.currentMouseX = mouseX;
         this.currentMouseY = mouseY;
@@ -398,17 +411,28 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
 
         this.bindTexture(this.getBackground());
         final int x_width = 197;
-        this.drawTexturedModalRect(offsetX, offsetY, 0, 0, x_width, 18);
+        int append_x = this.morePerRow * 18 + 27;
+        this.drawTexturedModalRect(offsetX, offsetY, 0, 0, x_width - 24, 18);
+        this.drawTexturedModalRect(offsetX + 170, offsetY, x_width - append_x, 0, append_x, 18);
+
 
         if (this.viewCell || (this instanceof GuiSecurityStation)) {
-            this.drawTexturedModalRect(offsetX + x_width, offsetY + jeiOffset, x_width, 0, 46, 128);
+            this.drawTexturedModalRect(offsetX + x_width + this.morePerRow * 18, offsetY + jeiOffset, x_width, 0, 46, 128);
         }
+
 
         for (int x = 0; x < this.rows; x++) {
-            this.drawTexturedModalRect(offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
+            this.drawTexturedModalRect(offsetX, offsetY + 18 + x * 18, 0, 18, 170, 18);
+            if (x == 0){
+                this.drawTexturedModalRect(offsetX + 170, offsetY + 17 + x * 18, x_width - append_x, 17, append_x, 18);
+            }else if (x == this.rows - 1){
+                this.drawTexturedModalRect(offsetX + 170, offsetY + 17 + x * 18, x_width - append_x, 17 + 36, append_x , 18);
+            }else {
+                this.drawTexturedModalRect(offsetX + 170, offsetY + 17 + x * 18, x_width - append_x, 17 + 18, append_x, 18);
+            }
         }
 
-        this.drawTexturedModalRect(offsetX, offsetY + 16 + this.rows * 18 + this.lowerTextureOffset, 0, 106 - 18 - 18, x_width,
+        this.drawTexturedModalRect(offsetX + this.morePerRow * 9, offsetY + 17 + this.rows * 18 + this.lowerTextureOffset, 0, 107 - 18 - 18, x_width,
                 99 + this.reservedSpace - this.lowerTextureOffset);
 
         if (this.viewCell) {
@@ -441,11 +465,20 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     }
 
     protected int getMaxRows() {
-        return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE) == TerminalStyle.SMALL ? 6 : Integer.MAX_VALUE;
+        return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_ROWS).ordinal() + 3;
+    }
+
+    protected int getMorePerRow(){
+        return this.morePerRow;
+    }
+
+    protected int getMaxPerRows(){
+        return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_COLUMNS).ordinal() + 9;
     }
 
     protected void repositionSlot(final AppEngSlot s) {
         s.yPos = s.getY() + this.ySize - 78 - 5;
+        s.xPos = s.getX() + this.morePerRow * 9;
     }
 
     @Override

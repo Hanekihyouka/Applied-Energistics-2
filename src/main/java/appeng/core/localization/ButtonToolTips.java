@@ -107,6 +107,9 @@ public enum ButtonToolTips {
     TerminalStyle_Tall,
     TerminalStyle_Small,
 
+    TerminalRows,
+    TerminalColumns,
+
     Stash,
     StashDesc,
     Encode,

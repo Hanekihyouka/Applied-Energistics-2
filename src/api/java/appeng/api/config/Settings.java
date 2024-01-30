@@ -71,6 +71,10 @@ public enum Settings
 
 	TERMINAL_STYLE( EnumSet.of( TerminalStyle.TALL, TerminalStyle.SMALL ) ),
 
+	TERMINAL_ROWS( EnumSet.allOf( TerminalRows.class ) ),
+
+	TERMINAL_COLUMNS( EnumSet.allOf( TerminalColumns.class ) ),
+
 	COPY_MODE( EnumSet.allOf( CopyMode.class ) ),
 
 	INTERFACE_TERMINAL( EnumSet.of( YesNo.YES, YesNo.NO ) ),
